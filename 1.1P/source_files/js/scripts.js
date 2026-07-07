@@ -1,11 +1,11 @@
 function changeText() {
 
     const textsArray = [
-        "Welcome to SIT725",
-        "Applied Software Engineering",
-        "Learning JavaScript",
-        "Using Git and GitHub",
-        "Hello Deakin!"
+        "Text 1",
+        "Text 2",
+        "Text 3",
+        "Text 4",
+        "Text 5"
     ];
 
     const number = getRandomNumberBetween(0, textsArray.length - 1);
