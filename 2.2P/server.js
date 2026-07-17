@@ -1,33 +1,74 @@
-// Import the Express module so we can create a web server.
 const express = require('express');
-// Import Node.js's built-in 'path' module to help with file paths.
 const path = require('path');
-// Create an instance of an Express application.
+
 const app = express();
-// Define the port number to listen on.
-// It uses an environment variable PORT if provided; otherwise, it defaults to 3000.
+
 const PORT = process.env.PORT || 3000;
-// Set up middleware to serve static files from the "public" folder.
-// This means that when a request is made to the root URL ("/"),
-// Express will look for a file named index.html (or other static assets) inside the "public" directory.
+
+// Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
-// Define a GET endpoint at '/square' that calculates the square of a number.
-// The endpoint expects a query parameter 'num', e.g., /square?num=5
-// Create a GET endpoint at /add
-app.get('/add', (req, res) => {
- // Parse the numbers from the query parameters
- const a = parseFloat(req.query.a);
- const b = parseFloat(req.query.b);
 
- // Calculate the sum
- const sum = a + b;
-
- // Send the result as a response
- res.send(`The sum of ${a} and ${b} is: ${sum}`);
+// Home route
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Start the server and have it listen on the specified port.
-// Once the server is running, log a message to the console indicating where it's accessible.
+// Addition
+app.get('/add', (req, res) => {
+    const a = parseFloat(req.query.a);
+    const b = parseFloat(req.query.b);
+
+    if (isNaN(a) || isNaN(b)) {
+        return res.send("Please provide valid numbers. Example: /add?a=5&b=10");
+    }
+
+    const sum = a + b;
+    res.send(`The sum of ${a} and ${b} is: ${sum}`);
+});
+
+// Subtraction
+app.get('/subtract', (req, res) => {
+    const a = parseFloat(req.query.a);
+    const b = parseFloat(req.query.b);
+
+    if (isNaN(a) || isNaN(b)) {
+        return res.send("Please provide valid numbers. Example: /subtract?a=10&b=5");
+    }
+
+    const difference = a - b;
+    res.send(`The difference between ${a} and ${b} is: ${difference}`);
+});
+
+// Multiplication
+app.get('/multiply', (req, res) => {
+    const a = parseFloat(req.query.a);
+    const b = parseFloat(req.query.b);
+
+    if (isNaN(a) || isNaN(b)) {
+        return res.send("Please provide valid numbers. Example: /multiply?a=5&b=10");
+    }
+
+    const product = a * b;
+    res.send(`The product of ${a} and ${b} is: ${product}`);
+});
+
+// Division
+app.get('/divide', (req, res) => {
+    const a = parseFloat(req.query.a);
+    const b = parseFloat(req.query.b);
+
+    if (isNaN(a) || isNaN(b)) {
+        return res.send("Please provide valid numbers. Example: /divide?a=10&b=2");
+    }
+
+    if (b === 0) {
+        return res.send("Error: Division by zero is not allowed.");
+    }
+
+    const quotient = a / b;
+    res.send(`The division of ${a} by ${b} is: ${quotient}`);
+});
+
 app.listen(PORT, () => {
- console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`Server is running on http://localhost:${PORT}`);
 });
